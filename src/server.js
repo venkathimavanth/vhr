@@ -15,7 +15,7 @@ app.set("view engine", "ejs");
 
 // Connect to MongoDB Atlas
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect('mongodb+srv://vhimareddy1999:vhimareddy1999@cluster0.rxrxx.mongodb.net/reminderDB?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
