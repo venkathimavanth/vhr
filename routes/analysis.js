@@ -18,7 +18,6 @@ router.get("/by-month", async (req, res) => {
   if (!month) return res.status(400).json({ error: 'Month is required, e.g. Apr 2025' });
 
   const { start, end } = getMonthDateRange(month);
-  console.log(start, end);
 
   try {
     const result = await Transaction.aggregate([

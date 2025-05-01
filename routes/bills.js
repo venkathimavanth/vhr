@@ -38,6 +38,44 @@ router.post("/", async (req, res) => {
   }
 });
 
+
+// GET: Fetch all bills
+router.get("/transaction", async (req, res) => {
+  console.log("GET transactions list");
+  try {
+    const result = await Transaction.aggregate([
+      { $match: { deleted: false } },
+      {
+        $lookup: {
+          from: 'bills',
+          localField: 'bill',
+          foreignField: '_id',
+          as: 'bill'
+        }
+      },
+      {
+        $unwind: {
+          path: '$bill',
+          preserveNullAndEmptyArrays: false
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          date: 1,
+          amount: 1,
+          note: 1,
+          title: '$bill.title'
+        }
+      },
+      { $sort: { date: -1 } }
+    ]);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 // POST: Add a new transaction
 router.post("/transaction", async (req, res) => {
   console.log("Updating bill & adding transaction...");
